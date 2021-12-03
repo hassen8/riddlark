@@ -3,13 +3,16 @@ package Riddlark;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 
 public class Gameplay {
 
     public static String command;
     public static GameStats gameStats;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
 
         System.out.println("Welcome to Riddlark. "
                 + "\nType 'ready' to begin playing or'quit' to stop playing"
@@ -27,22 +30,29 @@ public class Gameplay {
             if (command.contains("ready")) {
                 gameStats = startGame(keyboard);
                 break;
+            } else {
+                System.out.println("Input not recognized...Try again");
             }
 
         }
         System.out.println("Name: player.getUname()"
                 + "\nCorrect Guesses: " + gameStats.getCorrectGuesses()
-                + "\nTime taken to answer last riddle: " + gameStats.getLastElapsedTime());
+                + "\nTime taken to answer last riddle: " + gameStats.getLastElapsedTime() + " seconds");
 
         System.out.println("Bye bye...");
+        keyboard.close();
+        System.exit(0);
     }
 
-    public static GameStats startGame(BufferedReader keyboard) throws IOException {
+    public static GameStats startGame(BufferedReader keyboard) throws IOException, InterruptedException {
         GameStats game;
         int qCount = 0;
         int correctGuesses = 0;
         long startTime;
-        long[] elapsedTimes = new long[5];
+        long nextQuestionTime;
+        final long[] startedTime = new long[1];
+        long[] elapsedTimes = {0, 0, 0, 0, 0};
+        Timer timer = new Timer();
 
         while (true) {
             if (qCount == riddles.length) {
@@ -50,22 +60,32 @@ public class Gameplay {
                 break;
             }
             String answer = getRiddle(qCount);
-            startTime = System.currentTimeMillis();
+            startTime = (System.currentTimeMillis() / 1000);
+            nextQuestionTime = startTime + 10000;
             String command = keyboard.readLine();
             if (command.contains("quit")) {
                 break;
+            }
+            if (!command.contains(answer)) {
+                elapsedTimes[qCount] = (System.currentTimeMillis() / 1000 - startTime);
+                System.out.println("Sorry, the correct answer was " + answer + "\nYou lost the game");
+                break;
             } else if (command.contains(answer)) {
-                elapsedTimes[qCount] = (System.currentTimeMillis() - startTime) / 1000;
+                elapsedTimes[qCount] = (System.currentTimeMillis() - startTime * 1000) / 1000;
                 System.out.println("Hooray!!");
                 System.out.println("Answered in " + elapsedTimes[qCount] + " seconds!");
-                System.out.println(elapsedTimes[elapsedTimes.length - 1]);
-                System.out.println(elapsedTimes.length);
                 correctGuesses++;
                 qCount++;
+                System.out.println("Wait for the timer to go off for the next question");
+                int j = 5;
 
-            } else {
-                System.out.println("Sorry, the correct answer was " + answer + "\n You lost the game");
-                break;
+                for (long i = nextQuestionTime; i > startTime; i -= 1000) {
+                    TimeUnit.SECONDS.sleep(1);
+                    if (i <= nextQuestionTime - 5000) {
+                        System.out.print("\r"+j + " seconds til next question >>");
+                        j--;
+                    }
+                }
             }
         }
         game = new GameStats(correctGuesses, elapsedTimes);
@@ -73,7 +93,7 @@ public class Gameplay {
     }
 
     static String riddles[][] = {
-        {"What is always in fron/t of you but can’t be seen?",
+        {"What is always in front of you but can’t be seen?",
             "future"
         },
         {"The more of this there is, the less you see. What is it?",
@@ -96,14 +116,3 @@ public class Gameplay {
     }
 
 }
-
-//        final Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//            int i = 30;
-//            public void run() {
-//                i--;
-//                if (i< 0){
-//                    timer.cancel();
-//                }
-//            }
-//        }, 0, 1000);

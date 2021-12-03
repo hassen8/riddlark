@@ -130,12 +130,12 @@ public class ClientHandler implements Runnable{
     }
 
     private void startGame() {
-        out.println("Countdown started");
+        out.println("Get ready");
         final Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             int i = 5;
             public void run() {
-                out.print("Game starts in ..." + i--);
+                out.println("Game starts in ..." + i--);
                 if (i< 0){
                     timer.cancel();
                 }

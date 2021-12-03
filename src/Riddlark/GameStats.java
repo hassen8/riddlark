@@ -23,7 +23,11 @@ public class GameStats {
     }
 
     public long getLastElapsedTime() {
-        return elapsedTimes[correctGuesses - 1];
+        if (correctGuesses == 0) {
+            return elapsedTimes[correctGuesses];
+        } else {
+            return elapsedTimes[correctGuesses - 1];
+        }
     }
 
 }
