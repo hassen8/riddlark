@@ -13,6 +13,7 @@ public class Player {
     String password;
     boolean logged;
     Socket socket;
+    int gId;
 
     public Player(String uname, String password, Socket socket) {
         this.id = id + 1;
@@ -45,6 +46,14 @@ public class Player {
 
     public Socket getSocket() {
         return socket;
+    }
+
+    public int getgId() {
+        return gId;
+    }
+
+    public void setgId(int gId) {
+        this.gId = gId;
     }
 
 }

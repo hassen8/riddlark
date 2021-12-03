@@ -48,6 +48,7 @@ public class ClientHandler implements Runnable{
               if(player !=null && player.isLogged()!=true || player==null){
               out.println("You must login first. Type 'login' to log in.");
               }else if(player!=null && player.isLogged()==true){
+              GroupBase.addPlayerToGroup(player);
               startGame();
               }
             }else{
