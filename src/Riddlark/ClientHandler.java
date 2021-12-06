@@ -47,8 +47,9 @@ public class ClientHandler implements Runnable{
             else if(request.contains("ready")){  
               if(player !=null && player.isLogged()!=true || player==null){
               out.println("You must login first. Type 'login' to log in.");
-              }else if(player!=null && player.isLogged()==true){
-              GroupBase.addPlayerToGroup(player);
+              }else if(player!=null && player.isLogged()==true && GroupBase.checkPlayersInGroup(player.getgId())<2){
+              out.println("You're the only player in the group, wait for other players to join.\nwhen other players have joined the countdown will start");
+              }else{
               startGame();
               }
             }else{
@@ -123,6 +124,8 @@ public class ClientHandler implements Runnable{
        if(player.getUname().equals(uname) && player.getPassword().equals(password)){
        player.setLogged(true);
        out.println("You have successfully logged in as > "+player.getUname()+". Type 'ready' to start playing");
+       String message =GroupBase.addPlayerToGroup(player);
+       out.println(message);
        }else{
        out.println("Login failed, Type 'login' to try again");
        }

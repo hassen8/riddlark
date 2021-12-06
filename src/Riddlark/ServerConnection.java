@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Riddlark;
 
 import java.io.BufferedReader;
@@ -9,10 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
-/**
- *
- * @author hsn
- */
 public class ServerConnection implements Runnable {
 
     private Socket clientReceiver;
@@ -30,7 +22,7 @@ public class ServerConnection implements Runnable {
             while (true) {
                 String serverResponse = input.readLine();
                 if (serverResponse == null) {
-                    System.out.println("Server Disconnected");
+                    System.out.println("Server has Disconnected");
                     break;
                 }
                 System.out.println(serverResponse);

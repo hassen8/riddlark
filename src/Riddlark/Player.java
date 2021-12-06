@@ -1,22 +1,19 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Riddlark;
 
 import java.net.Socket;
 
 public class Player {
 
-    static int id = 0;
+    int id;
+    String state;
     String uname;
     String password;
     boolean logged;
     Socket socket;
     int gId;
+    GameStats gameStats;
 
     public Player(String uname, String password, Socket socket) {
-        this.id = id + 1;
         this.uname = uname;
         this.password = password;
         this.logged = false;
@@ -56,4 +53,11 @@ public class Player {
         this.gId = gId;
     }
 
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }   
 }

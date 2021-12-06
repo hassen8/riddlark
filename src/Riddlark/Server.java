@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Riddlark;
 
 import java.io.IOException;
@@ -11,17 +7,12 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-/**
- *
- * @author hsn
- */
 public class Server {
 
     private static final int PORT = 9090;
     public static Player stagedPlayers[] = new Player[4];
     public static ArrayList<Player> allPlayers= new ArrayList<>();
     public static ArrayList<Group> groups;
-    public static int gId = 0;
     public static ArrayList<ClientHandler> clients = new ArrayList<>();
     private static ExecutorService pool = Executors.newFixedThreadPool(10);
 

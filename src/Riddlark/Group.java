@@ -1,21 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Riddlark;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author hsn
- */
 public class Group {
 
     int id;
     int playerNo = 0;
     boolean isFull;
     boolean isReady;
+    boolean inSession;
     Player[] players = new Player[4];
 
     public Group(int id, Player player) {
@@ -41,6 +34,10 @@ public class Group {
 
     }
 
+    public int getPlayerNo() {
+        return playerNo;
+    }
+
     public boolean isFull() {
         return isFull;
     }
@@ -51,6 +48,14 @@ public class Group {
 
     public void setIsReady(boolean isReady) {
         this.isReady = isReady;
+    }
+
+    public boolean isInSession() {
+        return inSession;
+    }
+
+    public void setInSession(boolean inSession) {
+        this.inSession = inSession;
     }
 
 }
