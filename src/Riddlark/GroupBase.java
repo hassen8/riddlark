@@ -1,5 +1,6 @@
 package Riddlark;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GroupBase {
@@ -36,5 +37,11 @@ public class GroupBase {
     public static int checkPlayersInGroup(int id) {
         return groups.get(id).getPlayerNo();
     }
-
+    public static void playerIsReady(int id) throws IOException{
+        groups.get(id).incReadyPlayers();
+        if(groups.get(id).isReady){
+            
+            //Attach the sockets
+        }
+    }
 }

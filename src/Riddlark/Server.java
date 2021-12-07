@@ -14,7 +14,7 @@ public class Server {
     public static ArrayList<Player> allPlayers= new ArrayList<>();
     public static ArrayList<Group> groups;
     public static ArrayList<ClientHandler> clients = new ArrayList<>();
-    private static ExecutorService pool = Executors.newFixedThreadPool(10);
+    private static ExecutorService pool = Executors.newFixedThreadPool(30);
 
     public static void main(String[] args) throws IOException {
         ServerSocket listener = new ServerSocket(PORT);

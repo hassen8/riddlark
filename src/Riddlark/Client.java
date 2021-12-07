@@ -13,6 +13,7 @@ public class Client {
     private static final String SERVER_IP = "127.0.0.1";
     private static boolean firstBoot = true;
     public static String playerState = "playing";
+    public static String serverConnection = "connected";
 
     public static void main(String[] args) throws IOException {
         Socket socket = new Socket(SERVER_IP, PORT);
@@ -23,6 +24,7 @@ public class Client {
         new Thread(serverConn).start();
 
         while (true) {
+            if(serverConnection.equals("connected")){
             if (firstBoot == true) {
                 System.out.println("Welcome to Riddlark...\nType register to create a user\n"
                         + "Or Type 'login' if you have one\n"
@@ -38,6 +40,10 @@ public class Client {
             }
             if(playerState.equals("playing")){
             out.println(command);
+            }
+            }else{
+                System.out.println("You've been disconnected from the server.");
+                break;
             }
         }
         System.out.println("Bye Bye...");

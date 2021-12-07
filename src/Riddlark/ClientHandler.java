@@ -49,8 +49,12 @@ public class ClientHandler implements Runnable{
               out.println("You must login first. Type 'login' to log in.");
               }else if(player!=null && player.isLogged()==true && GroupBase.checkPlayersInGroup(player.getgId())<2){
               out.println("You're the only player in the group, wait for other players to join.\nwhen other players have joined the countdown will start");
+              GroupBase.playerIsReady(player.getgId());
+              //todo: Create a new thread for the game to run on
               }else{
-              startGame();
+              out.println("Wait for other group members to type ready.\nwhen other players are ready the countdown will start");
+              GroupBase.playerIsReady(player.getgId());
+              
               }
             }else{
              out.println("Input not recognized... try again");

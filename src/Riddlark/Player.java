@@ -59,5 +59,14 @@ public class Player {
 
     public void setState(String state) {
         this.state = state;
-    }   
+    }
+
+    public String getStats() {
+        return "Name: " + getUname()
+                + "\nCorrect Guesses: " + gameStats.getCorrectGuesses()
+                + "\nTime taken to answer last riddle: " + gameStats.getLastElapsedTime() + " seconds";
+    }
+    public void setStats(GameStats gameStats) {
+        this.gameStats = gameStats;
+    }
 }

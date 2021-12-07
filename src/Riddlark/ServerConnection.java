@@ -23,6 +23,7 @@ public class ServerConnection implements Runnable {
                 String serverResponse = input.readLine();
                 if (serverResponse == null) {
                     System.out.println("Server has Disconnected");
+                    Client.serverConnection="disconnected";
                     break;
                 }
                 System.out.println(serverResponse);

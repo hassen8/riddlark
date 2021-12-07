@@ -3,6 +3,7 @@ package Riddlark;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
@@ -10,7 +11,14 @@ import java.util.concurrent.TimeUnit;
 public class Gameplay {
 
     public static String command;
+    private static Player player;
+    private static Socket pSocket;
     public static GameStats gameStats;
+
+    Gameplay(Player player) {
+        this.player = player;
+        this.pSocket = player.getSocket();
+    }
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
@@ -50,7 +58,6 @@ public class Gameplay {
         int correctGuesses = 0;
         long startTime;
         long nextQuestionTime;
-        final long[] startedTime = new long[1];
         long[] elapsedTimes = {0, 0, 0, 0, 0};
         Timer timer = new Timer();
 
@@ -82,7 +89,7 @@ public class Gameplay {
                 for (long i = nextQuestionTime; i > startTime; i -= 1000) {
                     TimeUnit.SECONDS.sleep(1);
                     if (i <= nextQuestionTime - 5000) {
-                        System.out.print("\r"+j + " seconds til next question >>");
+                        System.out.println(j + " seconds til next question >>");
                         j--;
                     }
                 }
