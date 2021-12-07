@@ -82,14 +82,10 @@ public class Group {
     public void playGame() {
         for (int i = 0; i < playerNo; i++) {
             Gameplay nGame = new Gameplay(players[i]);
-            System.out.println("created instance");
             game.add(nGame);
-            System.out.println("added instance to array");
         }
-        System.out.println("About to enter executor loop");
 
         for (Gameplay gameInstance : game) {
-            System.out.println("executor loop");
             pool.execute(gameInstance);
         }
     }

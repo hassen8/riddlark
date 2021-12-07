@@ -7,6 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class Gameplay implements Runnable {
@@ -18,7 +19,7 @@ public class Gameplay implements Runnable {
     private BufferedReader in;
     private PrintWriter out;
 
-    Gameplay(Player player){
+    Gameplay(Player player) {
         this.player = player;
         this.pSocket = player.socket;
         this.in = player.in;
@@ -27,26 +28,13 @@ public class Gameplay implements Runnable {
 
     public void run() {
         try {
+            countDown();
 
-            out.println("Welcome to Riddlark. "
-                    + "\nType 'ready' to begin playing or'quit' to stop playing"
-                    + "\nAnswer the riddles as fast as you can, you'll have 30 seconds before time is up...good Luck\n>");
+            out.println("Answer the riddles as fast as you can, you'll have 30 seconds before time is up...good Luck\n>");
 
-            while (true) {
-                command = in.readLine();
+            gameStats = startGame();
+            player.setStats(gameStats);
 
-                if (command.contains("quit")) {
-                    break;
-                }
-
-                if (command.contains("ready")) {
-                    player.setStats(startGame());
-                    break;
-                } else {
-                    out.println("Input not recognized...Try again");
-                }
-
-            }
             out.println(player.getStats());
 
             out.println("Bye bye...");
@@ -130,4 +118,27 @@ public class Gameplay implements Runnable {
         return riddles[qCount][1];
     }
 
+    private void countDown() throws InterruptedException {
+        out.println("Get ready");
+        for (int i = 5; i >= 0; i--) {
+            out.println("Game starts in ..." + i);
+            TimeUnit.SECONDS.sleep(1);
+        }
+    }
+
+//        final Timer timer = new Timer();
+//        timer.scheduleAtFixedRate(new WaitableTimerTask( out, latch) {
+//            int i = 5;
+//            @Override
+//            public void run() {
+//                if (i > 0) {
+//                    out.println("Game starts in ..." + i--);
+//                } else {
+//                    latch.countDown();
+//                    timer.cancel();
+//                }
+//            }
+//        }, 0, 1000);
+//        latch.await();
+//    }
 }

@@ -11,8 +11,9 @@ public class GroupBase {
 
     public static String addPlayerToGroup(Player player) {
         if (groups.isEmpty()) {
-            System.out.println("Creating the first group in the list, and adding the player");
+            System.out.println("Creating the first group in the list");
             groups.add(new Group(id, player));
+            System.out.println("Adding player to the " + (id + 1) + " group");
             id++;
             message = "You've been added to group number: " + (id);
             return message;
@@ -37,7 +38,8 @@ public class GroupBase {
     public static int checkPlayersInGroup(int id) {
         return groups.get(id).getPlayerNo();
     }
-    public static void playerIsReady(int id) throws IOException{
+
+    public static void playerIsReady(int id) throws IOException {
         groups.get(id).incReadyPlayers();
     }
 }

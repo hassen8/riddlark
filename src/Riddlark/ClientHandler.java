@@ -127,21 +127,5 @@ public class ClientHandler implements Runnable{
        uname=null;
        password=null;
     }
-
-    private void startGame() {
-        out.println("Get ready");
-        final Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            int i = 5;
-            public void run() {
-                out.println("Game starts in ..." + i--);
-                if (i< 0){
-                    timer.cancel();
-                }
-            }
-        }, 0, 1000);
-        
-    }
-
 }
             
