@@ -1,5 +1,7 @@
 package Riddlark;
 
+import java.io.BufferedReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Player {
@@ -8,16 +10,20 @@ public class Player {
     String state;
     String uname;
     String password;
-    boolean logged;
-    Socket socket;
     int gId;
+    boolean logged;
     GameStats gameStats;
+    Socket socket;
+    BufferedReader in;
+    PrintWriter out;
 
-    public Player(String uname, String password, Socket socket) {
+    public Player(String uname, String password, Socket socket, BufferedReader in, PrintWriter out) {
         this.uname = uname;
         this.password = password;
         this.logged = false;
         this.socket = socket;
+        this.in = in;
+        this.out = out;
         id++;
     }
 
@@ -66,6 +72,7 @@ public class Player {
                 + "\nCorrect Guesses: " + gameStats.getCorrectGuesses()
                 + "\nTime taken to answer last riddle: " + gameStats.getLastElapsedTime() + " seconds";
     }
+
     public void setStats(GameStats gameStats) {
         this.gameStats = gameStats;
     }

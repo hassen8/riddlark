@@ -12,7 +12,7 @@ import java.util.TimerTask;
 
 public class ClientHandler implements Runnable{
 
-    private Socket client;
+    public Socket client;
     private BufferedReader in;
     private PrintWriter out;
     private Player player = null;
@@ -50,28 +50,20 @@ public class ClientHandler implements Runnable{
               }else if(player!=null && player.isLogged()==true && GroupBase.checkPlayersInGroup(player.getgId())<2){
               out.println("You're the only player in the group, wait for other players to join.\nwhen other players have joined the countdown will start");
               GroupBase.playerIsReady(player.getgId());
-              //todo: Create a new thread for the game to run on
+              break;
               }else{
               out.println("Wait for other group members to type ready.\nwhen other players are ready the countdown will start");
               GroupBase.playerIsReady(player.getgId());
-              
+              break;
               }
-            }else{
-             out.println("Input not recognized... try again");
-            }
+              }else{
+              out.println("Input not recognized... try again");
+              }  
             }
             
-            client.close();  // closes this socket
 
         } catch (IOException e) { // To catch and handle exceptions
             System.out.println("Exception in client handler "+e);
-        }finally{
-            try {
-                in.close();
-                out.close();
-            } catch (IOException e) {
-                System.out.println("Exception in closing resources "+e);
-            }
         }
     }
     
@@ -97,9 +89,8 @@ public class ClientHandler implements Runnable{
           }
          }
         }
-        player = new Player(uname,password,client);
+        player = new Player(uname,password,client,in,out);
         PlayerBase.addPlayer(player);
-        allPlayers.add(player);
         out.println("Registration Successfull, Type 'login' to continue");
         uname=null;
         password=null;

@@ -9,7 +9,7 @@ public class Group {
 
     int id;
     int playerNo = 0;
-    public ArrayList<Gameplay> game;
+    public static ArrayList<Gameplay> game = new ArrayList<>();
     boolean isFull = false;
     int readyPlayers = 0;
     boolean isReady = false;
@@ -48,14 +48,14 @@ public class Group {
         return playerNo;
     }
 
-    public void incReadyPlayers() throws IOException {
+    public void incReadyPlayers() {
         readyPlayers++;
-        
-        if (readyPlayers == playerNo) {
-            isReady = true;
-            inSession = true;
-            playGame();
-            
+        if (readyPlayers >= 2) {
+            if (readyPlayers == playerNo) {
+                isReady = true;
+                inSession = true;
+                playGame();
+            }
         }
     }
 
@@ -79,14 +79,19 @@ public class Group {
         this.inSession = inSession;
     }
 
-    public void playGame() throws IOException {
-        for (Player player : players) {
-            game.add(new Gameplay(player));
+    public void playGame() {
+        for (int i = 0; i < playerNo; i++) {
+            Gameplay nGame = new Gameplay(players[i]);
+            System.out.println("created instance");
+            game.add(nGame);
+            System.out.println("added instance to array");
         }
-        for(Gameplay gameInstance: game){
+        System.out.println("About to enter executor loop");
+
+        for (Gameplay gameInstance : game) {
+            System.out.println("executor loop");
             pool.execute(gameInstance);
         }
     }
-    
 
 }

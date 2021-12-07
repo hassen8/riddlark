@@ -23,7 +23,7 @@ public class ServerConnection implements Runnable {
                 String serverResponse = input.readLine();
                 if (serverResponse == null) {
                     System.out.println("Server has Disconnected");
-                    Client.serverConnection="disconnected";
+                    Client.serverConnection = "disconnected";
                     break;
                 }
                 System.out.println(serverResponse);
@@ -32,12 +32,6 @@ public class ServerConnection implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {
-                input.close();
-                clientReceiver.close();
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
         }
 
     }

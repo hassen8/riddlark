@@ -39,9 +39,5 @@ public class GroupBase {
     }
     public static void playerIsReady(int id) throws IOException{
         groups.get(id).incReadyPlayers();
-        if(groups.get(id).isReady){
-            
-            //Attach the sockets
-        }
     }
 }
