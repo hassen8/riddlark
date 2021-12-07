@@ -39,7 +39,6 @@ public class Gameplay implements Runnable {
 
             out.println("Bye bye...");
             in.close();
-            System.exit(0);
 
         } catch (Exception e) {
         }
@@ -56,6 +55,7 @@ public class Gameplay implements Runnable {
         while (true) {
             if (qCount == riddles.length) {
                 out.println("Congratulations, You have completed the game");
+                player.setState("winner");
                 break;
             }
             String answer = getRiddle(qCount);

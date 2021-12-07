@@ -1,13 +1,10 @@
 package Riddlark;
 
-import static Riddlark.Server.allPlayers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Timer;
-import java.util.TimerTask;
 
 
 public class ClientHandler implements Runnable{
@@ -47,7 +44,7 @@ public class ClientHandler implements Runnable{
             else if(request.contains("ready")){  
               if(player !=null && player.isLogged()!=true || player==null){
               out.println("You must login first. Type 'login' to log in.");
-              }else if(player!=null && player.isLogged()==true && GroupBase.checkPlayersInGroup(player.getgId())<2){
+              }else if(player!=null && player.isLogged() && GroupBase.checkPlayersInGroup(player.getgId())<2){
               out.println("You're the only player in the group, wait for other players to join.\nwhen other players have joined the countdown will start");
               GroupBase.playerIsReady(player.getgId());
               break;

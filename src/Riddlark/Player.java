@@ -6,7 +6,6 @@ import java.net.Socket;
 
 public class Player {
 
-    int id;
     String state;
     String uname;
     String password;
@@ -24,11 +23,6 @@ public class Player {
         this.socket = socket;
         this.in = in;
         this.out = out;
-        id++;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public String getUname() {
