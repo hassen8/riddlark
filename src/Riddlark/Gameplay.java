@@ -1,13 +1,10 @@
 package Riddlark;
 
 import java.io.BufferedReader;
+import Riddlark.Group;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class Gameplay implements Runnable {
@@ -30,46 +27,52 @@ public class Gameplay implements Runnable {
         try {
             countDown();
 
-            out.println("Answer the riddles as fast as you can, you'll have 30 seconds before time is up...good Luck\n>");
-
+            out.println("Answer the riddles as fast as you can, you'll have 30 seconds before time is up...good Luck");
+            TimeUnit.SECONDS.sleep(3);
             gameStats = startGame();
             player.setStats(gameStats);
-
             out.println(player.getStats());
-
-            out.println("Bye bye...");
-            in.close();
-
+            if (player.getState().contains("spectator")) {
+                Group.addSpectator(player);
+            } else if (player.getState().contains("winner")) {
+                Group.sendWinnerToSpectators(player.getStats());
+            } else {
+                out.println("Bye bye...");
+            }
         } catch (Exception e) {
+            System.out.println("Exception in gameplay module: " + e);
         }
     }
 
     public GameStats startGame() throws IOException, InterruptedException {
         GameStats game;
+        Riddle riddle;
         int qCount = 0;
         int correctGuesses = 0;
         long startTime;
         long nextQuestionTime;
         long[] elapsedTimes = {0, 0, 0, 0, 0};
-
         while (true) {
             if (qCount == riddles.length) {
                 out.println("Congratulations, You have completed the game");
                 player.setState("winner");
                 break;
             }
-            String answer = getRiddle(qCount);
+            riddle = getRiddle(qCount);
+            Group.sendRiddleToSpectator(riddle);
             startTime = (System.currentTimeMillis() / 1000);
             nextQuestionTime = startTime + 10000;
             String command = in.readLine();
+            Group.sendPlayerAnswer(player.getUname(), command);
             if (command.contains("quit")) {
                 break;
             }
-            if (!command.contains(answer)) {
+            if (!command.contains(riddle.answer)) {
                 elapsedTimes[qCount] = (System.currentTimeMillis() / 1000 - startTime);
-                out.println("Sorry, the correct answer was " + answer + "\nYou lost the game");
+                out.println("Sorry, the correct answer was " + riddle.answer + "\nYou lost the game");
+                Group.sendPlayerLost(player.getUname());
                 break;
-            } else if (command.contains(answer)) {
+            } else if (command.contains(riddle.answer)) {
                 if ((System.currentTimeMillis() / 1000) > nextQuestionTime) {
                     out.println("Sorry, you didn't answer in time. You have lost the game");
                     break;
@@ -81,7 +84,6 @@ public class Gameplay implements Runnable {
                 qCount++;
                 out.println("Wait for the timer to go off for the next question");
                 int j = 5;
-
                 for (long i = nextQuestionTime; i > startTime; i -= 1000) {
                     TimeUnit.SECONDS.sleep(1);
                     if (i <= nextQuestionTime - 5000) {
@@ -90,6 +92,11 @@ public class Gameplay implements Runnable {
                     }
                 }
             }
+        }
+        out.println("Do you want to spectate the game? Type 'Yes' or 'No'");
+        command = in.readLine();
+        if (command.contains("y")) {
+            player.setState("spectator");
         }
         game = new GameStats(correctGuesses, elapsedTimes);
         return game;
@@ -113,9 +120,10 @@ public class Gameplay implements Runnable {
         }
     };
 
-    public String getRiddle(int qCount) {
+    public Riddle getRiddle(int qCount) {
+        Riddle riddle = new Riddle(riddles[qCount][0], riddles[qCount][1]);
         out.println(riddles[qCount][0]);
-        return riddles[qCount][1];
+        return riddle;
     }
 
     private void countDown() throws InterruptedException {
@@ -125,20 +133,15 @@ public class Gameplay implements Runnable {
             TimeUnit.SECONDS.sleep(1);
         }
     }
+}
 
-//        final Timer timer = new Timer();
-//        timer.scheduleAtFixedRate(new WaitableTimerTask( out, latch) {
-//            int i = 5;
-//            @Override
-//            public void run() {
-//                if (i > 0) {
-//                    out.println("Game starts in ..." + i--);
-//                } else {
-//                    latch.countDown();
-//                    timer.cancel();
-//                }
-//            }
-//        }, 0, 1000);
-//        latch.await();
-//    }
+class Riddle {
+
+    String riddle;
+    String answer;
+
+    Riddle(String riddle, String answer) {
+        this.riddle = riddle;
+        this.answer = answer;
+    }
 }
